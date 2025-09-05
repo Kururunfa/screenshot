@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Responsivo)</title>
+    <title>Screenshot da Área Visível (Banner Responsivo)</title>
     <style>
-        /* --- ESTILOS BASE (DESKTOP-FIRST) --- */
+        /* ... (nenhuma alteração na parte superior do CSS) ... */
         body {
             height: 2000px; 
             font-family: Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f4;
-            margin: 0; /* Adicionado para garantir que não há margens inesperadas */
+            margin: 0;
         }
         
         #conteudo-para-capturar {
@@ -21,19 +21,15 @@
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-
-            /* NOVO: Limita a largura em ecrãs grandes para melhor leitura */
             max-width: 900px;
-            /* NOVO: Centra o conteúdo na página em ecrãs grandes */
             margin: 0 auto; 
-            box-sizing: border-box; /* Garante que o padding não aumenta a largura total */
+            box-sizing: border-box;
         }
 
         h1 {
-            font-size: 2em; /* Tamanho base para o título */
+            font-size: 2em;
         }
 
-        /* --- Estilos do Modal (permanecem maioritariamente iguais) --- */
         #modal-screenshot {
             position: fixed; 
             z-index: 1000;
@@ -53,6 +49,8 @@
             opacity: 1;
             pointer-events: all;
         }
+
+        /* --- ALTERAÇÃO NO CSS #1 --- */
         #link-fundo {
             position: absolute;
             z-index: 1;
@@ -60,17 +58,26 @@
             transition: opacity 0.6s ease-in-out;
             border-radius: 5px;
             cursor: pointer;
+            
+            /* NOVO: Faz o link ocupar sempre o ecrã todo, de forma responsiva */
+            width: 100%;
+            height: 100%;
         }
+
+        /* --- ALTERAÇÃO NO CSS #2 --- */
         #imagem-fundo-revelada {
             width: 100%;
             height: 100%;
-            /* background-image: url('bet_365_line_logo1.jpg'); */
-            background-image: url('bet365_vertical.png');
-            background-size: 100% 100%;
+            background-image: url('bet_365_line_logo1.jpg');
+            
+            /* ALTERADO: 'cover' ajusta a imagem para cobrir a área sem distorcer. */
+            background-size: cover; 
+            
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 5px;
         }
+
         #split-container {
             display: flex;
             position: relative;
@@ -106,54 +113,33 @@
             pointer-events: none;
         }
 
-
-        /* --- MEDIA QUERY PARA DISPOSITIVOS MÓVEIS --- */
-        /* Estes estilos aplicam-se a ecrãs com largura MÁXIMA de 768px (tablets e telemóveis) */
         @media (max-width: 768px) {
             body {
-                /* Reduz o espaçamento geral em ecrãs pequenos */
                 padding: 10px;
             }
-
             #conteudo-para-capturar {
-                /* Reduz o padding interno para dar mais espaço ao texto */
                 padding: 15px;
             }
-
             h1 {
-                /* Diminui um pouco o título para não ser tão dominante */
                 font-size: 1.6em;
             }
-
             .fechar {
-                 /* Reduz o tamanho e ajusta a posição do botão de fechar */
                 font-size: 32px;
                 top: 10px;
                 right: 20px;
             }
         }
-
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <div id="conteudo-para-capturar">
-        <h1>Website Publisher1</h1>
-        <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos. <br><br> Depois disso, o site "abrirá" ao meio e com uma animação será revelado um banner da Bet365 por trás.<br> <br></p>
-    <p>Texto dummy para preencher esta demo. <br> 
-    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-        <p>Data da Geração: <span id="data"></span></p> 
     
+    <div id="conteudo-para-capturar">
+        <h1>Website Publisher</h1>
+        <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos. <br><br> Depois disso, o site "abrirá" ao meio e com uma animação será revelado um banner da Bet365 por trás.<br> <br></p>
+        <p>Texto dummy para preencher esta demo...</p>
+        <p>Data da Geração: <span id="data"></span></p> 
     </div>
-
     <div id="modal-screenshot">
         <a id="link-fundo" href="https://bet365.com" target="_blank" rel="noopener noreferrer">
             <div id="imagem-fundo-revelada"></div>
@@ -166,9 +152,6 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
     </div>
 
     <script>
-        // O SEU JAVASCRIPT NÃO PRECISA DE QUALQUER ALTERAÇÃO.
-        // Ele já é responsivo por natureza.
-
         document.getElementById('data').innerText = new Date().toLocaleDateString('pt-PT');
         
         const modal = document.getElementById('modal-screenshot');
@@ -179,23 +162,10 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
         const linkFundo = document.getElementById('link-fundo');
         let fecharTimeoutId;
 
-        function iniciarAnimacao() {
-            if (modal.classList.contains('a-fechar')) return;
-            clearTimeout(fecharTimeoutId);
-            modal.classList.add('a-fechar');
-        }
-
-        function fecharModalCompletamente() {
-            modal.classList.remove('visivel');
-        }
-
-        function gerirCliqueDeFecho() {
-            if (modal.classList.contains('a-fechar')) {
-                fecharModalCompletamente();
-            } else {
-                iniciarAnimacao();
-            }
-        }
+        // ... (funções de gestão do modal permanecem iguais) ...
+        function iniciarAnimacao() { if (modal.classList.contains('a-fechar')) return; clearTimeout(fecharTimeoutId); modal.classList.add('a-fechar'); }
+        function fecharModalCompletamente() { modal.classList.remove('visivel'); }
+        function gerirCliqueDeFecho() { if (modal.classList.contains('a-fechar')) { fecharModalCompletamente(); } else { iniciarAnimacao(); } }
 
         function iniciarProcessoDeScreenshot() {
             html2canvas(document.body, {
@@ -215,8 +185,12 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
 
                 splitContainer.style.width = widthPx;
                 splitContainer.style.height = heightPx;
-                linkFundo.style.width = widthPx;
-                linkFundo.style.height = heightPx;
+                
+                // --- ALTERAÇÃO NO JAVASCRIPT ---
+                // REMOVEMOS estas duas linhas. O tamanho do link de fundo
+                // passará a ser controlado pelo CSS para ser sempre responsivo.
+                // linkFundo.style.width = widthPx;
+                // linkFundo.style.height = heightPx;
                 
                 modal.classList.remove('a-fechar');
                 modal.classList.add('visivel');
@@ -234,7 +208,6 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
         linkFundo.addEventListener('click', fecharModalCompletamente);
 
         setTimeout(iniciarProcessoDeScreenshot, 2000);
-        
     </script>
 </body>
 </html>
