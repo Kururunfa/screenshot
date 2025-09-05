@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshot da Área Visível (Tamanho Corrigido)</title>
+    <style>
+        /* O CSS permanece exatamente o mesmo da versão anterior */
+        body {
+            height: 2000px; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #conteudo-para-capturar {
+            padding: 25px;
+            border: 2px solid #007bff;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #modal-screenshot {
+            position: fixed; 
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #modal-screenshot.visivel {
+            opacity: 1;
+            pointer-events: all;
+        }
+        #link-fundo {
+            position: absolute;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #imagem-fundo-revelada {
+            width: 100%;
+            height: 100%;
+            background-image: url('bet_365_line_logo1.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 5px;
+        }
+        #split-container {
+            display: flex;
+            position: relative;
+            z-index: 2;
+            border: 3px solid white;
+            border-radius: 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        .fechar {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 3;
+        }
+        .split-half {
+            width: 50%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: 200% 100%;
+            transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        #split-left { background-position: left center; }
+        #split-right { background-position: right center; }
+        #modal-screenshot.a-fechar #split-left { transform: translateX(-100%); }
+        #modal-screenshot.a-fechar #split-right { transform: translateX(100%); }
+        #modal-screenshot.a-fechar #link-fundo { opacity: 1; }
+        #modal-screenshot.a-fechar #split-container {
+            pointer-events: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div id="conteudo-para-capturar">
+        <h1>Website Publisher</h1>
+        <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos. <br><br> Depois disso, o site "abrirá" ao meio e com uma animação será revelado um banner da Bet365 por trás.<br> <br></p>
+	<!-- <img src="index.png" crossorigin="anonymous"> -->
+        <p>Texto dummy para preencher esta demo. <br> 
+	Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+        <p>Data da Geração: <span id="data"></span></p> 
+	
+    </div>
+
+    <div id="modal-screenshot">
+        <a id="link-fundo" href="https://bet365.com" target="_blank" rel="noopener noreferrer">
+            <div id="imagem-fundo-revelada"></div>
+        </a>
+        <div id="split-container">
+            <div class="split-half" id="split-left"></div>
+            <div class="split-half" id="split-right"></div>
+        </div>
+        <span class="fechar">&times;</span>
+    </div>
+
+    <script>
+        document.getElementById('data').innerText = new Date().toLocaleDateString('pt-PT');
+        
+        const modal = document.getElementById('modal-screenshot');
+        const btnFechar = document.querySelector('.fechar');
+        const splitContainer = document.getElementById('split-container');
+        const splitLeft = document.getElementById('split-left');
+        const splitRight = document.getElementById('split-right');
+        const linkFundo = document.getElementById('link-fundo');
+        let fecharTimeoutId;
+
+        function iniciarAnimacao() {
+            if (modal.classList.contains('a-fechar')) return;
+            clearTimeout(fecharTimeoutId);
+            modal.classList.add('a-fechar');
+        }
+
+        function fecharModalCompletamente() {
+            modal.classList.remove('visivel');
+        }
+
+        function gerirCliqueDeFecho() {
+            if (modal.classList.contains('a-fechar')) {
+                fecharModalCompletamente();
+            } else {
+                iniciarAnimacao();
+            }
+        }
+
+        function iniciarProcessoDeScreenshot() {
+            html2canvas(document.body, {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                x: window.scrollX,
+                y: window.scrollY,
+                useCORS: true
+            }).then(canvas => {
+                const imageDataUrl = canvas.toDataURL('png');
+                
+                splitLeft.style.backgroundImage = `url(${imageDataUrl})`;
+                splitRight.style.backgroundImage = `url(${imageDataUrl})`;
+
+                // --- ALTERAÇÃO PRINCIPAL PARA CORRIGIR O TAMANHO ---
+                // Removemos o cálculo antigo que limitava o tamanho do modal.
+                // Agora, o tamanho do modal será exatamente o tamanho do screenshot.
+                const widthPx = `${canvas.width}px`;
+                const heightPx = `${canvas.height}px`;
+
+                splitContainer.style.width = widthPx;
+                splitContainer.style.height = heightPx;
+                linkFundo.style.width = widthPx;
+                linkFundo.style.height = heightPx;
+                
+                modal.classList.remove('a-fechar');
+                modal.classList.add('visivel');
+
+                fecharTimeoutId = setTimeout(iniciarAnimacao, 3000);
+            });
+        }
+        
+        btnFechar.addEventListener('click', gerirCliqueDeFecho);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                gerirCliqueDeFecho();
+            }
+        });
+        linkFundo.addEventListener('click', fecharModalCompletamente);
+
+        setTimeout(iniciarProcessoDeScreenshot, 2000);
+    </script>
+</body>
+</html>
