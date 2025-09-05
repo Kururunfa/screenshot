@@ -4,36 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Responsivo)</title>
+    <title>Screenshot da Área Visível (Tamanho Corrigido)</title>
     <style>
-        /* --- ESTILOS BASE (DESKTOP-FIRST) --- */
+        /* O CSS permanece exatamente o mesmo da versão anterior */
         body {
             height: 2000px; 
             font-family: Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f4;
-            margin: 0; /* Adicionado para garantir que não há margens inesperadas */
         }
-        
         #conteudo-para-capturar {
             padding: 25px;
             border: 2px solid #007bff;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-
-            /* NOVO: Limita a largura em ecrãs grandes para melhor leitura */
-            max-width: 900px;
-            /* NOVO: Centra o conteúdo na página em ecrãs grandes */
-            margin: 0 auto; 
-            box-sizing: border-box; /* Garante que o padding não aumenta a largura total */
         }
-
-        h1 {
-            font-size: 2em; /* Tamanho base para o título */
-        }
-
-        /* --- Estilos do Modal (permanecem maioritariamente iguais) --- */
         #modal-screenshot {
             position: fixed; 
             z-index: 1000;
@@ -104,34 +90,6 @@
         #modal-screenshot.a-fechar #split-container {
             pointer-events: none;
         }
-
-
-        /* --- MEDIA QUERY PARA DISPOSITIVOS MÓVEIS --- */
-        /* Estes estilos aplicam-se a ecrãs com largura MÁXIMA de 768px (tablets e telemóveis) */
-        @media (max-width: 768px) {
-            body {
-                /* Reduz o espaçamento geral em ecrãs pequenos */
-                padding: 10px;
-            }
-
-            #conteudo-para-capturar {
-                /* Reduz o padding interno para dar mais espaço ao texto */
-                padding: 15px;
-            }
-
-            h1 {
-                /* Diminui um pouco o título para não ser tão dominante */
-                font-size: 1.6em;
-            }
-
-            .fechar {
-                 /* Reduz o tamanho e ajusta a posição do botão de fechar */
-                font-size: 32px;
-                top: 10px;
-                right: 20px;
-            }
-        }
-
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -139,8 +97,9 @@
     <div id="conteudo-para-capturar">
         <h1>Website Publisher</h1>
         <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos. <br><br> Depois disso, o site "abrirá" ao meio e com uma animação será revelado um banner da Bet365 por trás.<br> <br></p>
-    <p>Texto dummy para preencher esta demo. <br> 
-    Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+	<!-- <img src="index.png" crossorigin="anonymous"> -->
+        <p>Texto dummy para preencher esta demo. <br> 
+	Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
 
 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
 
@@ -150,7 +109,7 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
 
 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
         <p>Data da Geração: <span id="data"></span></p> 
-    
+	
     </div>
 
     <div id="modal-screenshot">
@@ -165,9 +124,6 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
     </div>
 
     <script>
-        // O SEU JAVASCRIPT NÃO PRECISA DE QUALQUER ALTERAÇÃO.
-        // Ele já é responsivo por natureza.
-
         document.getElementById('data').innerText = new Date().toLocaleDateString('pt-PT');
         
         const modal = document.getElementById('modal-screenshot');
@@ -209,6 +165,9 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
                 splitLeft.style.backgroundImage = `url(${imageDataUrl})`;
                 splitRight.style.backgroundImage = `url(${imageDataUrl})`;
 
+                // --- ALTERAÇÃO PRINCIPAL PARA CORRIGIR O TAMANHO ---
+                // Removemos o cálculo antigo que limitava o tamanho do modal.
+                // Agora, o tamanho do modal será exatamente o tamanho do screenshot.
                 const widthPx = `${canvas.width}px`;
                 const heightPx = `${canvas.height}px`;
 
