@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Corrigido)</title>
+    <title>Screenshot da Área Visível (Banner Totalmente Visível)</title>
     <style>
         body {
             height: 2000px; 
@@ -29,8 +29,6 @@
             font-size: 2em;
         }
 
-        /* --- CORREÇÃO PRINCIPAL NO MODAL E SEUS FILHOS --- */
-
         #modal-screenshot {
             position: fixed; 
             z-index: 1000;
@@ -39,12 +37,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.8);
-            
-            /* REMOVIDO: Estas 3 propriedades estavam a causar os problemas de posicionamento. */
-            /* display: flex; */
-            /* justify-content: center; */
-            /* align-items: center; */
-
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease-in-out;
@@ -57,7 +49,6 @@
 
         #link-fundo {
             position: absolute;
-            /* NOVO: Garante o alinhamento correto no canto superior esquerdo */
             top: 0;
             left: 0;
             width: 100%;
@@ -73,19 +64,19 @@
             width: 100%;
             height: 100%;
             background-image: url('bet_365_line_logo1.jpg');
-            background-size: cover; 
+            
+            /* --- ALTERAÇÃO AQUI: 'contain' em vez de 'cover' --- */
+            background-size: contain; 
+            
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 5px;
         }
 
         #split-container {
-            /* ALTERADO: De 'relative' para 'absolute' para controlo total da posição */
             position: absolute;
-            /* NOVO: Alinha o container do screenshot perfeitamente com o ecrã */
             top: 0;
             left: 0;
-            
             display: flex;
             z-index: 2;
             border: 3px solid white;
@@ -94,8 +85,6 @@
             overflow: hidden;
         }
         
-        /* --- FIM DA CORREÇÃO PRINCIPAL --- */
-
         .fechar {
             position: absolute;
             top: 20px;
@@ -104,7 +93,7 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 3; /* O z-index mais alto para estar sempre no topo */
+            z-index: 3;
         }
         .split-half {
             width: 50%;
@@ -151,8 +140,6 @@
     </div>
 
     <script>
-        // O JavaScript não precisa de qualquer alteração, 
-        // as correções foram todas feitas no CSS.
         document.getElementById('data').innerText = new Date().toLocaleDateString('pt-PT');
         
         const modal = document.getElementById('modal-screenshot');
