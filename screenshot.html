@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Alinhamento Robusto)</title>
+    <title>Screenshot da Área Visível (Mobile Corrigido)</title>
     <style>
         html { box-sizing: border-box; }
         *, *:before, *:after { box-sizing: inherit; }
@@ -82,15 +82,17 @@
         function fecharModalCompletamente() { modal.classList.remove('visivel'); }
         function gerirCliqueDeFecho() { if (modal.classList.contains('a-fechar')) { fecharModalCompletamente(); } else { iniciarAnimacao(); } }
 
-        /* --- CORREÇÃO FINAL E ROBUSTA NO JAVASCRIPT --- */
         async function iniciarProcessoDeScreenshot() {
-            // 1. Obter as dimensões e posição de scroll exatas.
             const scrollX = window.scrollX;
             const scrollY = window.scrollY;
-            const width = document.documentElement.clientWidth;
-            const height = document.documentElement.clientHeight;
 
-            // 2. Criar um contentor temporário e invisível para a clonagem.
+            /* --- CORREÇÃO FINAL E ESPECÍFICA PARA MOBILE --- */
+            // Voltamos a usar window.innerWidth/Height. Em mobile, estas são as medidas
+            // mais fiáveis do "visual viewport" (o que o utilizador realmente vê),
+            // e são a chave para corrigir o transbordo massivo.
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
             const captureContainer = document.createElement('div');
             captureContainer.style.position = 'fixed';
             captureContainer.style.left = '0';
@@ -98,26 +100,21 @@
             captureContainer.style.width = `${width}px`;
             captureContainer.style.height = `${height}px`;
             captureContainer.style.overflow = 'hidden';
-            captureContainer.style.zIndex = '-9999'; // Mantém-no fora da vista
+            captureContainer.style.zIndex = '-9999';
 
-            // 3. Clonar todo o documento para dentro do nosso contentor.
             const clone = document.documentElement.cloneNode(true);
             clone.style.position = 'absolute';
             clone.style.top = '0';
             clone.style.left = '0';
-            // 4. Aplicar uma transformação para "simular" a posição de scroll.
             clone.style.transform = `translate(${-scrollX}px, ${-scrollY}px)`;
 
             captureContainer.appendChild(clone);
             document.body.appendChild(captureContainer);
 
-            // 5. Tirar o screenshot DO CONTENTOR, que tem o tamanho perfeito.
             const canvas = await html2canvas(captureContainer, { useCORS: true });
             
-            // 6. Limpar o DOM, removendo o contentor temporário.
             document.body.removeChild(captureContainer);
 
-            // 7. Usar o canvas (que agora tem o tamanho correto) para a animação.
             const imageDataUrl = canvas.toDataURL('png');
             splitLeft.style.backgroundImage = `url(${imageDataUrl})`;
             splitRight.style.backgroundImage = `url(${imageDataUrl})`;
