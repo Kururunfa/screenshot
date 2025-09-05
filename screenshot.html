@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Banner Responsivo)</title>
+    <title>Screenshot da Área Visível (Corrigido)</title>
     <style>
-        /* ... (nenhuma alteração na parte superior do CSS) ... */
         body {
             height: 2000px; 
             font-family: Arial, sans-serif;
@@ -30,6 +29,8 @@
             font-size: 2em;
         }
 
+        /* --- CORREÇÃO PRINCIPAL NO MODAL E SEUS FILHOS --- */
+
         #modal-screenshot {
             position: fixed; 
             z-index: 1000;
@@ -38,55 +39,63 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            
+            /* REMOVIDO: Estas 3 propriedades estavam a causar os problemas de posicionamento. */
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: center; */
+
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease-in-out;
         }
+
         #modal-screenshot.visivel {
             opacity: 1;
             pointer-events: all;
         }
 
-        /* --- ALTERAÇÃO NO CSS #1 --- */
         #link-fundo {
             position: absolute;
+            /* NOVO: Garante o alinhamento correto no canto superior esquerdo */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
             opacity: 0;
             transition: opacity 0.6s ease-in-out;
             border-radius: 5px;
             cursor: pointer;
-            
-            /* NOVO: Faz o link ocupar sempre o ecrã todo, de forma responsiva */
-            width: 100%;
-            height: 100%;
         }
 
-        /* --- ALTERAÇÃO NO CSS #2 --- */
         #imagem-fundo-revelada {
             width: 100%;
             height: 100%;
             background-image: url('bet_365_line_logo1.jpg');
-            
-            /* ALTERADO: 'cover' ajusta a imagem para cobrir a área sem distorcer. */
             background-size: cover; 
-            
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 5px;
         }
 
         #split-container {
+            /* ALTERADO: De 'relative' para 'absolute' para controlo total da posição */
+            position: absolute;
+            /* NOVO: Alinha o container do screenshot perfeitamente com o ecrã */
+            top: 0;
+            left: 0;
+            
             display: flex;
-            position: relative;
             z-index: 2;
             border: 3px solid white;
             border-radius: 5px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             overflow: hidden;
         }
+        
+        /* --- FIM DA CORREÇÃO PRINCIPAL --- */
+
         .fechar {
             position: absolute;
             top: 20px;
@@ -95,7 +104,7 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 3;
+            z-index: 3; /* O z-index mais alto para estar sempre no topo */
         }
         .split-half {
             width: 50%;
@@ -114,20 +123,10 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            #conteudo-para-capturar {
-                padding: 15px;
-            }
-            h1 {
-                font-size: 1.6em;
-            }
-            .fechar {
-                font-size: 32px;
-                top: 10px;
-                right: 20px;
-            }
+            body { padding: 10px; }
+            #conteudo-para-capturar { padding: 15px; }
+            h1 { font-size: 1.6em; }
+            .fechar { font-size: 32px; top: 10px; right: 20px; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -136,10 +135,10 @@
     
     <div id="conteudo-para-capturar">
         <h1>Website Publisher</h1>
-        <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos. <br><br> Depois disso, o site "abrirá" ao meio e com uma animação será revelado um banner da Bet365 por trás.<br> <br></p>
-        <p>Texto dummy para preencher esta demo...</p>
+        <p>O screenshot de TODA A ÁREA VISÍVEL será tirado automaticamente em 2 segundos...</p>
         <p>Data da Geração: <span id="data"></span></p> 
     </div>
+
     <div id="modal-screenshot">
         <a id="link-fundo" href="https://bet365.com" target="_blank" rel="noopener noreferrer">
             <div id="imagem-fundo-revelada"></div>
@@ -152,6 +151,8 @@
     </div>
 
     <script>
+        // O JavaScript não precisa de qualquer alteração, 
+        // as correções foram todas feitas no CSS.
         document.getElementById('data').innerText = new Date().toLocaleDateString('pt-PT');
         
         const modal = document.getElementById('modal-screenshot');
@@ -162,7 +163,6 @@
         const linkFundo = document.getElementById('link-fundo');
         let fecharTimeoutId;
 
-        // ... (funções de gestão do modal permanecem iguais) ...
         function iniciarAnimacao() { if (modal.classList.contains('a-fechar')) return; clearTimeout(fecharTimeoutId); modal.classList.add('a-fechar'); }
         function fecharModalCompletamente() { modal.classList.remove('visivel'); }
         function gerirCliqueDeFecho() { if (modal.classList.contains('a-fechar')) { fecharModalCompletamente(); } else { iniciarAnimacao(); } }
@@ -186,12 +186,6 @@
                 splitContainer.style.width = widthPx;
                 splitContainer.style.height = heightPx;
                 
-                // --- ALTERAÇÃO NO JAVASCRIPT ---
-                // REMOVEMOS estas duas linhas. O tamanho do link de fundo
-                // passará a ser controlado pelo CSS para ser sempre responsivo.
-                // linkFundo.style.width = widthPx;
-                // linkFundo.style.height = heightPx;
-                
                 modal.classList.remove('a-fechar');
                 modal.classList.add('visivel');
 
@@ -199,16 +193,14 @@
             });
         }
         
-        
         btnFechar.addEventListener('click', gerirCliqueDeFecho);
         modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                gerirCliqueDeFecho();
-            }
+            if (event.target === modal) { gerirCliqueDeFecho(); }
         });
         linkFundo.addEventListener('click', fecharModalCompletamente);
 
         setTimeout(iniciarProcessoDeScreenshot, 2000);
+        
     </script>
 </body>
 </html>
