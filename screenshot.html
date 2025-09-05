@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screenshot da Área Visível (Banner Totalmente Visível)</title>
+    <title>Screenshot da Área Visível (Alinhamento Perfeito)</title>
     <style>
+        /* O CSS está correto e não necessita de alterações */
         body {
             height: 2000px; 
             font-family: Arial, sans-serif;
@@ -64,10 +65,7 @@
             width: 100%;
             height: 100%;
             background-image: url('bet_365_line_logo1.jpg');
-            
-            /* --- ALTERAÇÃO AQUI: 'contain' em vez de 'cover' --- */
             background-size: contain; 
-            
             background-repeat: no-repeat;
             background-position: center;
             border-radius: 5px;
@@ -155,9 +153,17 @@
         function gerirCliqueDeFecho() { if (modal.classList.contains('a-fechar')) { fecharModalCompletamente(); } else { iniciarAnimacao(); } }
 
         function iniciarProcessoDeScreenshot() {
-            html2canvas(document.body, {
-                width: window.innerWidth,
-                height: window.innerHeight,
+            /* --- CORREÇÃO PRINCIPAL NO JAVASCRIPT --- */
+
+            // ALTERADO: Capturamos o elemento <html> (documentElement) em vez do <body>.
+            // É mais fiável para obter as dimensões corretas do viewport.
+            html2canvas(document.documentElement, {
+                // ALTERADO: Usamos clientWidth e clientHeight para obter a largura/altura
+                // da área visível, EXCLUINDO a barra de scroll.
+                width: document.documentElement.clientWidth,
+                height: document.documentElement.clientHeight,
+
+                // A posição do scroll continua correta com window.scrollX/Y.
                 x: window.scrollX,
                 y: window.scrollY,
                 useCORS: true
